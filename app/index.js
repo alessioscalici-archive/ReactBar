@@ -12,6 +12,8 @@ import {
   View
 } from 'react-native';
 
+import { InclinationCircle } from './components';
+
 export default class ReactBar extends Component {
   render() {
     return (
@@ -20,12 +22,13 @@ export default class ReactBar extends Component {
           Welcome to React Native!
         </Text>
         <Text style={styles.instructions}>
-          To get started, edit index.js (Cross Platform)
+          To get started, edit index.android.js
         </Text>
         <Text style={styles.instructions}>
           Double tap R on your keyboard to reload,{'\n'}
           Shake or press menu button for dev menu
         </Text>
+        <InclinationCircle></InclinationCircle>
       </View>
     );
   }
