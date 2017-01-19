@@ -1,4 +1,4 @@
 
-export * from './InclinationCircle/InclinationCircle.js';
+export * from './InclinationCircle';
 
 
