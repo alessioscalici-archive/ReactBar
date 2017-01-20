@@ -15,6 +15,9 @@ import Svg, {
 
 import styles from './styles';
 
+// FIXME accelerometer frequency (50) to global config
+// FIXME angles to global config
+
 export class InclinationCircle extends Component {
 
   constructor(props) {
@@ -46,6 +49,7 @@ export class InclinationCircle extends Component {
 
     });
     SensorManager.startAccelerometer(50);
+
   }
 
   componentWillUnmount() {
@@ -58,11 +62,11 @@ export class InclinationCircle extends Component {
 
     // calculated values
     var val = {
-      cx: styles.radius + styles.strokeWidth,
-      cy: styles.radius + styles.strokeWidth,
-      internalDiameter: styles.radius * 2 + styles.strokeWidth * 0.5,
-      externalDiameter: styles.radius * 2 + styles.strokeWidth * 2,
-      internalRadius: styles.radius + styles.strokeWidth * 0.5
+      cx: this.props.radius + this.props.strokeWidth,
+      cy: this.props.radius + this.props.strokeWidth,
+      internalDiameter: this.props.radius * 2 + this.props.strokeWidth * 0.5,
+      externalDiameter: this.props.radius * 2 + this.props.strokeWidth * 2,
+      internalRadius: this.props.radius + this.props.strokeWidth * 0.5
     };
 
     return (
@@ -79,26 +83,26 @@ export class InclinationCircle extends Component {
                           }}>
           <Circle cx={val.cx}
                   cy={val.cy}
-                  r={styles.radius}
+                  r={this.props.radius}
                   stroke={this.state.inclinationStyle.stroke}
-                  strokeWidth={styles.strokeWidth}
+                  strokeWidth={this.props.strokeWidth}
                   fill={this.state.inclinationStyle.background}>
           </Circle>
           <Line
             x1={val.cx}
-            y1={styles.strokeWidth * 1.5}
+            y1={this.props.strokeWidth * 1.5}
             x2={val.cx}
             y2={val.internalDiameter}
             stroke={this.state.inclinationStyle.stroke}
-            strokeWidth={styles.strokeWidth}
+            strokeWidth={this.props.strokeWidth}
             />
           <Line
-            x1={styles.strokeWidth * 1.5}
+            x1={this.props.strokeWidth * 1.5}
             y1={val.cy}
             x2={val.internalDiameter}
             y2={val.cy}
             stroke={this.state.inclinationStyle.stroke}
-            strokeWidth={styles.strokeWidth}
+            strokeWidth={this.props.strokeWidth}
             />
           <Line
             x1={val.cx}
@@ -106,7 +110,7 @@ export class InclinationCircle extends Component {
             x2={val.cx + val.internalRadius * Math.cos(Math.PI / 6 * 8)}
             y2={val.cy + val.internalRadius * Math.sin(Math.PI / 6 * 8)}
             stroke={this.state.inclinationStyle.stroke}
-            strokeWidth={styles.strokeWidth}
+            strokeWidth={this.props.strokeWidth}
             />
           <Line
             x1={val.cx}
@@ -114,12 +118,12 @@ export class InclinationCircle extends Component {
             x2={val.cx + val.internalRadius * Math.cos(Math.PI / 6 * 10)}
             y2={val.cy + val.internalRadius * Math.sin(Math.PI / 6 * 10)}
             stroke={this.state.inclinationStyle.stroke}
-            strokeWidth={styles.strokeWidth}
+            strokeWidth={this.props.strokeWidth}
             />
         </Svg>
         <View style={{
           height: val.internalRadius,
-          width: styles.strokeWidth,
+          width: this.props.strokeWidth,
           backgroundColor: styles.bottleLine.stroke,
           position: 'absolute',
           top: val.cy,
@@ -127,8 +131,11 @@ export class InclinationCircle extends Component {
         }}>
         </View>
       </View>
-
-
     );
   }
 }
+
+InclinationCircle.propTypes = {
+  radius: React.PropTypes.number.isRequired,
+  strokeWidth: React.PropTypes.number.isRequired
+};

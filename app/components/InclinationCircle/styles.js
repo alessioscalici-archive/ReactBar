@@ -1,8 +1,6 @@
 import common from '../../styles/common'
 
 export default {
-  radius: 100,
-  strokeWidth: 2,
 
   bottleLine: {
     stroke: common.colors.info

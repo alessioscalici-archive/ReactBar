@@ -28,7 +28,7 @@ export default class ReactBar extends Component {
           Double tap R on your keyboard to reload,{'\n'}
           Shake or press menu button for dev menu
         </Text>
-        <InclinationCircle></InclinationCircle>
+        <InclinationCircle radius={100} strokeWidth={2}></InclinationCircle>
       </View>
     );
   }
