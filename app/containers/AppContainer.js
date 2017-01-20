@@ -28,7 +28,7 @@ class AppContainer extends Component {
         <Text>
           AppContainer: testNum = { this.props.testNum }
         </Text>
-        <TouchableHighlight onPress={ () => { this.doAction() } }>
+        <TouchableHighlight onPress={ this.props.doAction }>
           <Text>
             Do Action!
           </Text>
