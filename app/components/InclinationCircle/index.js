@@ -20,6 +20,10 @@ import styles from './styles';
 // FIXME accelerometer frequency (50) to global config
 // FIXME angles to global config
 
+let prevActive = false;
+import { eventEmitter } from '../../actions/InclinationCircle.actions.js';
+
+
 class InclinationCircle extends PureComponent {
 
   constructor(props) {
@@ -29,6 +33,19 @@ class InclinationCircle extends PureComponent {
       inclinationStyle: styles.neutralInclination
     };
 
+
+    let that = this;
+    eventEmitter.addListener('ACTIVATE_INCLINATION_CIRCLE', () => {
+      console.log('START ANIMATION NOW');
+    });
+    eventEmitter.addListener('DEACTIVATE_INCLINATION_CIRCLE', () => {
+      console.log('STOP ANIMATION NOW');
+      this.accelerometerSubscription.remove();
+      that.setState({
+        angle: 0,
+        inclinationStyle: styles.neutralInclination
+      });
+    });
   }
 
   componentDidMount() {
@@ -144,8 +161,14 @@ InclinationCircle.propTypes = {
 };
 
 
-export default connect((state) => {
-  return state.inclinationCircle;
+export default connect((state, ownProps) => {
+  let statePart = state.inclinationCircle;
+  console.log(456, prevActive, statePart.active);
+  if (prevActive !== statePart.active) {
+    console.log(456, statePart.active ? 'ACTIVATED' : 'DEACTIVATED');
+    prevActive = statePart.active;
+  }
+  return statePart;
 }, () => {
   return {};
 })(InclinationCircle);
