@@ -7,8 +7,11 @@ import {
 } from 'react-native'
 
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import { ActionCreators } from '../actions'
+
+
+import * as AppActions from '../actions/App.actions.js';
+import * as InclinationCircleActions from '../actions/InclinationCircle.actions';
+
 
 import InclinationCircle from '../components/InclinationCircle'
 
@@ -54,15 +57,15 @@ class AppContainer extends Component {
 function mapDispatchToProps (dispatch, ownProps) {
   return {
     startAccelerometer: () => {
-      dispatch(ActionCreators.startAccelerometer());
-      dispatch(ActionCreators.activateInclinationCircle());
+      dispatch(AppActions.startAccelerometer());
+      dispatch(InclinationCircleActions.activateInclinationCircle());
     },
     stopAccelerometer: () => {
-      dispatch(ActionCreators.stopAccelerometer());
-      dispatch(ActionCreators.deactivateInclinationCircle());
+      dispatch(AppActions.stopAccelerometer());
+      dispatch(InclinationCircleActions.deactivateInclinationCircle());
     },
     doAction: () => {
-      dispatch(ActionCreators.doAction())
+      dispatch(AppActions.doAction())
     }
   };
 }

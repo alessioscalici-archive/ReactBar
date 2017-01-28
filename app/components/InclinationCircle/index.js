@@ -37,10 +37,11 @@ class InclinationCircle extends PureComponent {
     let that = this;
     eventEmitter.addListener('ACTIVATE_INCLINATION_CIRCLE', () => {
       console.log('START ANIMATION NOW');
+      this.subscribeAccelerometer(true);
     });
     eventEmitter.addListener('DEACTIVATE_INCLINATION_CIRCLE', () => {
       console.log('STOP ANIMATION NOW');
-      this.accelerometerSubscription.remove();
+      that.subscribeAccelerometer(false);
       that.setState({
         angle: 0,
         inclinationStyle: styles.neutralInclination
@@ -49,31 +50,11 @@ class InclinationCircle extends PureComponent {
   }
 
   componentDidMount() {
-
-    let that = this;
-
-    this.accelerometerSubscription = DeviceEventEmitter.addListener('Accelerometer', function (data) {
-
-      let norm = Math.sqrt(data.x * data.x + data.y * data.y);
-      let incl = Math.acos(data.y / norm); // normalized y
-      that.setState({
-        angle: data.x < 0 ? incl * -1 : incl,
-        inclinationStyle:
-          incl < 1.5707963267948966 ? // Math.PI / 2
-          styles.neutralInclination :
-          incl < 2.6179938779914944 ? // Math.PI / 6 * 3
-            styles.wrongInclination :
-            styles.correctInclination
-      });
-
-
-    });
-
-
+    this.subscribeAccelerometer(true);
   }
 
   componentWillUnmount() {
-    this.accelerometerSubscription.remove();
+    this.subscribeAccelerometer(false);
   }
 
   render() {
@@ -152,6 +133,31 @@ class InclinationCircle extends PureComponent {
         </View>
       </View>
     );
+  }
+
+
+  subscribeAccelerometer(subscribe) {
+
+    if (subscribe) {
+      let that = this;
+      this.accelerometerSubscription = DeviceEventEmitter.addListener('Accelerometer', function (data) {
+
+        let norm = Math.sqrt(data.x * data.x + data.y * data.y);
+        let incl = Math.acos(data.y / norm); // normalized y
+        that.setState({
+          angle: data.x < 0 ? incl * -1 : incl,
+          inclinationStyle:
+            incl < 1.5707963267948966 ? // Math.PI / 2
+              styles.neutralInclination :
+              incl < 2.6179938779914944 ? // Math.PI / 6 * 3
+                styles.wrongInclination :
+                styles.correctInclination
+        });
+      });
+    } else {
+      this.accelerometerSubscription.remove();
+    }
+
   }
 }
 
